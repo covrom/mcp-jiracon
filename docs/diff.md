@@ -277,6 +277,10 @@
 
 ## 5. 68 методов, присутствующих только в swagger (нет в api_docs.md)
 
+> **Обновлено:** все перечисленные ниже swagger-only методы удалены из
+> `docs/9.0.0.swagger.v3.json` (2026-10-01). В swagger осталось ровно 43 операции —
+> множество методов из api_docs.md. Раздел сохранён как исторический список удалённых.
+
 **admin (7):**
 - POST /rest/api/admin/group — create
 - DELETE /rest/api/admin/group/{groupName}
