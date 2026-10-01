@@ -2,6 +2,10 @@
 
 Дата сравнения: 2026-10-01. Confluence REST API (v1, `/rest/api`).
 
+Раздел 6 — дополнение от той же даты: сравнение swagger с `docs/docs.atlassian.com.md`
+(полная markdown-версия официальной HTML-документации, из которой `extract_api.py`
+собрал `api_docs.md`).
+
 **Объём:** api_docs.md описывает 43 метода, swagger v3 — 111 операций (85 путей).
 Все 43 метода из api_docs.md присутствуют в swagger; **68 методов есть только в swagger** (полный список в конце).
 
@@ -375,3 +379,68 @@
 - GET /rest/api/webhooks/{webhookId}/statistics — getStatistics
 - GET /rest/api/webhooks/{webhookId}/statistics/summary — getStatisticsSummary
 - POST /rest/api/webhooks/test — testWebhook
+
+---
+
+## 6. Сравнение swagger ↔ docs/docs.atlassian.com.md
+
+Дата: 2026-10-01. `docs.atlassian.com.md` — markdown-версия официальной HTML-документации
+Confluence REST API (тот же источник, из которого `extract_api.py` собрал `api_docs.md`).
+
+**Объём:** docs.atlassian.com.md описывает **103 метода**, текущий (обрезанный коммитом
+`e1f936e`) swagger — **43 операции** (33 пути).
+
+### 6.1. Методы
+
+- Все 43 операции swagger присутствуют в docs.atlassian.com.md; swagger-only методов нет.
+- **60 методов есть только в docs.atlassian.com.md**:
+  - 55 — присутствовали в исходном swagger 9.0.0 до обрезки, т.е. входят в список
+    раздела 5 (admin, audit, backup-restore, group, longtask, space-write, user, webhooks, …);
+  - 5 — никогда не было в swagger: `GET /audit/export`, `GET /audit/retention`,
+    `GET /audit/since`, `POST /audit`, `PUT /audit/retention`.
+- 13 из 68 удалённых swagger-методов отсутствуют и в docs.atlassian.com.md
+  (существовали только в swagger): `POST …/attachment/{attachmentId}/move`,
+  `DELETE …/attachment/{attachmentId}`, `DELETE …/attachment/{attachmentId}/version/{version}`,
+  `DELETE /content/{id}/version/{versionNumber}`, `GET /content/{contentId}/watchers`,
+  `GET /space/{spaceKey}/watchers`, `GET /space/{spaceKey}/labels` (+ `/popular`, `/recent`,
+  `/{labelName}/related`), `PUT /content/{id}/restriction`, `PUT /space/{spaceKey}/archive`,
+  `PUT /space/{spaceKey}/restore`.
+
+Итог по множествам: docs.atlassian.com.md (103) = 43 общих + 55 удалённых + 5 audit;
+исходный swagger (111) = 43 общих + 68 удалённых.
+
+### 6.2. Параметры общих 43 методов
+
+Query-параметры идентичны в 39 из 43. Расхождения (во всех — лишний параметр в swagger,
+все четыре уже описаны в §2):
+
+| Операция | Есть только в swagger | Причина |
+|---|---|---|
+| `GET /space` | `spaceKeySingle` | артефакт repeatable `spaceKey` |
+| `GET /content/{id}/property/{key}` | `limit` | копипаст описания про labels |
+| `GET /space/{spaceKey}/property/{key}` | `start`, `limit` | метод возвращает одно свойство |
+| `PUT /content/{id}/property/{key}` | `expand` | — |
+
+### 6.3. Эквивалентность api_docs.md и docs.atlassian.com.md
+
+Для всех 43 общих методов наборы query-параметров в `api_docs.md` и
+`docs.atlassian.com.md` совпадают полностью (0 расхождений из 43); тексты и схемы
+сверены выборочно и совпадают. Следовательно, всё сказанное в разделах 1–4 о паре
+swagger ↔ api_docs.md дословно применимо к паре swagger ↔ docs.atlassian.com.md.
+Отличается только оформление секций (заголовки/якоря `#### [Name](#api/…)` и разметка
+таблиц), не содержание.
+
+Прочее:
+
+- `deprecated` в docs.atlassian.com.md помечен один метод —
+  `GET /content/{id}/history/{version}/macro/hash/{hash}` (суффикс в заголовке секции);
+  swagger помечает тот же метод (`deprecated: true`); `api_docs.md` маркер утерял (§2).
+- Схемы: swagger — 104 компонента в `components.schemas`; docs.atlassian.com.md —
+  inline Swagger-2 схемы (79 уникальных `title`), см. §1.
+
+### 6.4. Замечания для повторного парсинга docs.atlassian.com.md
+
+- Между HTTP-методом и путём стоит неразрывный пробел (U+00A0), после анкора заголовка
+  встречается суффикс «deprecated».
+- ``PUT /rest/api/content/456`` — inline-пример внутри раздела Update, а не отдельный метод:
+  наивный grep по бэктикам даёт 104 совпадения вместо 103 реальных методов.
