@@ -256,14 +256,23 @@
 10. Лишний параметр `spaceKeySingle` у GET /space.
 
 ### Явные дефекты api_docs.md
-1. Path-параметры не документированы ни для одного метода.
-2. Тело POST `/content/{id}/label` описано как `string`.
-3. Код ответа `**?**` у 4 методов (POST /content, GET /content/scan, POST/PUT blueprint).
-4. Отсутствуют схемы ошибок (RestError) и content-type тел.
+
+> **Проверено по исходнику (docs/docs.atlassian.com.html, официальная документация
+> Atlassian ~8.x):** все перечисленные ниже «дефекты md» присутствуют и в самом
+> HTML-оригинале — экстрактор `extract_api.py` воспроизвёл их корректно, не исказив
+> источник. Это дефекты самой старой документации Atlassian, часть которых исправлена
+> в swagger 9.0 (массивы→объекты, `**?**`→200, path-параметры и RestError добавлены).
+
+1. Path-параметры не документированы ни для одного метода (в HTML нет ни одного `<h6>path parameters</h6>`).
+2. Тело POST `/content/{id}/label` описано как `string` (в HTML `"type":"string"`).
+3. Код ответа `**?**` у 4 методов (POST /content, GET /content/scan, POST/PUT blueprint) — статус в HTML реально отсутствует у этих representation.
+4. Отсутствуют схемы ошибок (RestError) и content-type тел (content-type только в ответах).
 5. Противоречия внутри файла: default expand у POST /content (3 варианта), limit у user/list (100 vs 200), limit=25 vs «site limit» у descendant/{type}.
 6. Устаревшие Jira-style схемы: массивы вместо объектов для space/history/version/container; ссылки на `docs.atlassian.com/jira/REST/schema/...`.
-7. Javadoc-артефакты `{@link ...}`/`{@see ...}`; обрыв текста на «...with no comment:» у attachment data.
-8. Неверное описание 200 у PUT property/{key} («content» вместо property) и у GET space property/{key} («list» вместо одного свойства).
+7. Javadoc-артефакты `{@link ...}`/`{@see ...}` (34 вхождения в HTML); обрыв текста на «...with no comment:» у attachment data — тоже в оригинале.
+8. Неверное описание 200 у PUT property/{key} («content» вместо property) и у GET space property/{key} («list» вместо одного свойства) — копипасты из HTML.
+9. macro/id: секция параметров отсутствует и в HTML (нет query/path таблиц и тела).
+10. Обрезанные описания: search заканчивается на «For example:», user/current expand без описания — так и в HTML.
 
 ---
 
