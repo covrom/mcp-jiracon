@@ -522,8 +522,8 @@ func (f *Fetcher) SearchFields(ctx context.Context, keyword string, limit int, r
 	if keyword != "" {
 		// Score fields by fuzzy match and sort descending, then trim to limit.
 		type scoredField struct {
-			f    map[string]any
-			scr  float64
+			f   map[string]any
+			scr float64
 		}
 		list := make([]scoredField, len(raw))
 		for i, field := range raw {

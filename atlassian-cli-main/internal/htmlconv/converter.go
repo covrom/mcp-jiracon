@@ -323,4 +323,3 @@ func getMacroBody(n *html.Node) string {
 	}
 	return ""
 }
-

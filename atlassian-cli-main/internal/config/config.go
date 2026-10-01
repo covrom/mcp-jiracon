@@ -38,4 +38,4 @@ func loadConfig(prefix string) (*AtlassianConfig, error) {
 }
 
 func LoadJiraConfig() (*AtlassianConfig, error)       { return loadConfig("JIRA") }
-func LoadConfluenceConfig() (*AtlassianConfig, error)  { return loadConfig("CONFLUENCE") }
+func LoadConfluenceConfig() (*AtlassianConfig, error) { return loadConfig("CONFLUENCE") }

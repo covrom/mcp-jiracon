@@ -77,14 +77,14 @@ type SearchResult struct {
 
 // CreateIssueInput holds the parameters for creating a new Jira issue.
 type CreateIssueInput struct {
-	ProjectKey  string            `json:"projectKey"`
-	Summary     string            `json:"summary"`
-	IssueType   string            `json:"issueType"`
-	Description string            `json:"description,omitempty"`
-	Assignee    string            `json:"assignee,omitempty"`
-	Priority    string            `json:"priority,omitempty"`
-	Labels      []string          `json:"labels,omitempty"`
-	CustomFields map[string]any   `json:"customFields,omitempty"`
+	ProjectKey   string         `json:"projectKey"`
+	Summary      string         `json:"summary"`
+	IssueType    string         `json:"issueType"`
+	Description  string         `json:"description,omitempty"`
+	Assignee     string         `json:"assignee,omitempty"`
+	Priority     string         `json:"priority,omitempty"`
+	Labels       []string       `json:"labels,omitempty"`
+	CustomFields map[string]any `json:"customFields,omitempty"`
 }
 
 type transitionsResponse struct {
